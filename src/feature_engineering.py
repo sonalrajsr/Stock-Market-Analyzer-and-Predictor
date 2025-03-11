@@ -1,5 +1,3 @@
-import pandas as pd
-
 def moving_average(df, window):
     return df['Close'].rolling(window=window).mean()
 
@@ -17,10 +15,4 @@ def macd(df, short_window=12, long_window=26, signal_window=9):
     signal = macd.ewm(span=signal_window, adjust=False).mean()
     return macd, signal
 
-def add_technical_indicators(df):
-    """Add SMA, RSI, MACD to DataFrame."""
-    df['SMA_50'] = moving_average(df, 50)
-    df['SMA_200'] = moving_average(df, 200)
-    df['RSI_14'] = rsi(df, 14)
-    df['MACD'], df['Signal'] = macd(df)
-    return df
+

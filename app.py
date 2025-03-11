@@ -17,30 +17,10 @@ end_date = st.sidebar.date_input("End Date", datetime.date(2023, 12, 31))
 
 # Button to Fetch Data
 if st.sidebar.button("Fetch Data"):
-    st.write("Fetching data...")
-
     try:
         data = data_loader.get_stock_data(ticker, start_date, end_date)
-        st.write("✅ Data Fetched Successfully!")
-    except Exception as e:
-        st.error(f"❌ Error fetching data: {e}")
-        st.stop()
-
-    try:
-        data = feature_engineering.add_technical_indicators(data)
-        st.write("📊 Indicators Added!")
-    except Exception as e:
-        st.error(f"❌ Error adding indicators: {e}")
-        st.stop()
-
-    # Debugging: Show the first few rows
-    st.write(f"Data Shape: {data.shape}")
-    st.write(data)
-
-    if not data.empty:
-        st.success("✅ Data Loaded!")
-        
-        # Plot Stock Prices
+        st.success("✅ Data Fetched Successfully!")
+        st.write(data)
         st.subheader("Stock Price Trends")
         fig, ax = plt.subplots(figsize=(12,6))
         ax.plot(data.Date, data["Close"], label="Stock Price", color='blue')
@@ -48,6 +28,7 @@ if st.sidebar.button("Fetch Data"):
         ax.plot(data.Date, data["SMA_200"], label="200-day SMA", linestyle="dashed", color='green')
         ax.legend()
         st.pyplot(fig)
+
         # Plot Stock Prices
         st.subheader("Rleative Strength Index (RSI)")
         fig, ax = plt.subplots(figsize=(12,6))
@@ -59,7 +40,8 @@ if st.sidebar.button("Fetch Data"):
         plt.ylabel("RSI Value")
         ax.legend()
         st.pyplot(fig)
-        # Plot Stock 
+
+        # Plot Stock macd
         st.subheader("Moving Average Convergence Divergence (MACD)")
         plt.figure(figsize=(12,6))
         plt.plot(data.Date, data["MACD"], label="MACD", color='black')
@@ -70,14 +52,15 @@ if st.sidebar.button("Fetch Data"):
         plt.ylabel("MACD Value")
         plt.legend()
         st.pyplot(plt)
-        plt.figure(figsize=(12,6))
+
         # Plot Stock Trading Volume
+        plt.figure(figsize=(12,6))
         st.subheader("Stock Trading Volume")
         plt.bar(data.Date, data["Volume"], color="gray", alpha=0.7)
         plt.title("Stock Trading Volume Over Time")
         plt.xlabel("Date")
         plt.ylabel("Volume")
         st.pyplot(plt)
-
-    else:
-        st.error("❌ No data found.")
+    except Exception as e:
+        st.error(f"❌ Error fetching data: {e}")
+        st.stop()
