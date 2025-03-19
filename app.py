@@ -3,7 +3,6 @@ import pandas as pd
 import datetime
 import matplotlib.pyplot as plt
 from src import data_loader
-from src import feature_engineering
 
 # Streamlit App Title
 st.set_page_config(page_title="Algorithmic Trading Dashboard", layout="wide")
